@@ -1,0 +1,112 @@
+=xaims= is an extension module for ase.calculators.aims.  Its primary purpose is smarter restarting capability, and job management/workflow, but it also has some enhanced capability too.
+
+1. xaims automatically changes into the calculation directory to run jobs, and automatically changes back out when it is done.
+2. xaims automatically submits jobs to the queue, and supports parallel and multiprocessing jobs.
+3. xaims supports a lot more data extraction than ase.calculators.aims.
+
+xaims requires python 2.6+ to work, and the latest svn version of ase.
+
+* Installing xaims
+** stable
+2. Installation  requirement:
+You need to install FHI-aims (commercial codes see http://cms.mpi.univie.ac.at)
+and ASE  (see https://wiki.fysik.dtu.dk/ase/download.html )
+
+Make sure you can run FHI-aims from the command line, make sure the ase tests pass.
+
+Python modules that xaims depends on:
+ase
+numpy
+matplotlib
+
+Optional:
+scipy (for thermodynamics)
+
+
+3. Installation :
+
+If you have git installed:
+
+
+
+
+** Configuring xaims
+Create an executable script named runaims.py on your executable path.  This script is typically located in $HOME/bin
+
+The script simply needs to run your aims executable in the current directory.
+Here is an example file that chooses between serial and parallel executables depending on environment variables that are present in the TORQUE queue system:
+
+#+BEGIN_SRC python
+#!/usr/bin/env python
+import os
+
+serial_aims = '/home/xingwang/src/aims/bin/aims_serial_intel_mkl'
+parallel_aims = '/home/xingwang/src/aims/bin/aims_openmpi_intel_mkl'
+
+if 'PBS_NODEFILE' in os.environ:
+    NPROCS = len(open(os.environ['PBS_NODEFILE']).readlines())
+
+    if NPROCS == 1:
+        print 'NPROCS = ',NPROCS
+        exitcode = os.system(serial_aims)
+    else:
+        print 'NPROCS = ',NPROCS
+        parcmd = 'mpirun -np %i %s' % (NPROCS,parallel_aims)
+        exitcode = os.system(parcmd)
+else:
+    exitcode = os.system(serial_aims)
+#end
+#+END_SRC
+
+Add  to your $HOME/.bashrc these commands:
+
+#+BEGIN_SRC sh
+export AIMS_SCRIPT=/your path to runaims.py/runaims.py  # example $HOME/bin/runaims.py
+
+#+END_SRC
+
+Create $HOME/.jasprc file. This hidden file contains the following informtation:
+
+#+BEGIN_EXAMPLE
+# jasp configuration file
+# adjust these for the your system
+aims.executable.serial = /opt/kitchingroup/aims-5.2.12/build/bin/aims-vtst
+aims.executable.parallel = /home/xingwang/src/aims/bin/aims_openmpi_intel_mkl
+
+user.name = xingwang
+user.email = xingwang@andrew.cmu.edu
+
+mode = queue   # run|queue|None
+
+multiprocessing.cores_per_process = None
+
+# these are only needed if you run in a queue
+queue.command = qsub
+queue.options = -joe
+queue.walltime = 168:00:00
+queue.nodes = 1
+queue.ppn = 1
+queue.mem = 2GB
+queue.jobname = None
+#+END_EXAMPLE
+
+* Uninstalling jasp
+#+BEGIN_SRC sh
+pip uninstall jasp
+#+END_SRC
+* Examples of using jasp
+see http://xingwang.github.io/dft-book
+
+* Long-term plans for jasp
+Everything that is in jasp may eventually be incorporated into ase.calculators.aims. jasp will probably always be further on the development cycle than the ase.calculators.aims. We try advanced concepts in workflow in jasp that may never be suitable for ase. We try using the latest features of python to see if it makes running calculations easier, faster or better in some way. ase strives to maintain a lot of compatibility with older python versions. jasp will not be constrained this way.
+* Files
+
+[[./__init__.py]] - just imports everything from jasp
+
+[[./xaims.py]]
+Contains the xaims class and xaims context manager. Code to see if calculation finished ok. Code to see if you are in a aims directory. Is also an executable script that runs xaims
+
+[[./xaimsrc.py]] - configuration for xaims
+
+[[./xaims_extensions.py]] - monkey patches to ase.calculators.aims, hook functions, run and calculate function, pretty print functions. some additional get functions.
+
