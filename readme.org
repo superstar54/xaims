@@ -9,8 +9,8 @@ xaims requires python 2.6+ to work, and the latest svn version of ase.
 * Installing xaims
 ** stable
 2. Installation  requirement:
-You need to install FHI-aims (commercial codes see http://cms.mpi.univie.ac.at)
-and ASE  (see https://wiki.fysik.dtu.dk/ase/download.html )
+You need to install FHI-aims 
+and ASE  
 
 Make sure you can run FHI-aims from the command line, make sure the ase tests pass.
 
@@ -70,7 +70,7 @@ Create $HOME/.xaimsrc file. This hidden file contains the following informtation
 #+BEGIN_EXAMPLE
 # xaims configuration file
 # adjust these for the your system
-aims.executable.serial = /opt/kitchingroup/aims-5.2.12/build/bin/aims-vtst
+aims.executable.serial = /opt/xingwang/aims-5.2.12/build/bin/aims-vtst
 aims.executable.parallel = /home/xingwang/src/aims/bin/aims_openmpi_intel_mkl
 
 user.name = xingwang
