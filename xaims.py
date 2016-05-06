@@ -24,10 +24,10 @@ import numpy as np
 np.set_printoptions(precision=3, suppress=True)
 
 # internal imports
-from ase.calculators.xaimsrc import *          # configuration data
+from xaimsrc import *          # configuration data
 
-from ase.calculators.xaims_exceptions import *  # exception definitions
-#from xaims_extensions import *  # extensions to aims.py
+from xaims_exceptions import *  # exception definitions
+from xaims_extensions import *  # extensions to aims.py
 
 # ###################################################################
 # Logger for handling information, warning and debugging
@@ -93,7 +93,7 @@ read. we only care if the number or types of atoms changed.
                                             a1, a2))
 
 
-def Xaims(debug=None,
+def Xaims(debug=10,
          restart=None,
          output_template='aims',
          track_output=False,

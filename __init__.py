@@ -15,4 +15,4 @@ Find the source at http://github.com/superstar54/xaims
 
 """
 
-from jasp import *
+from xaims import *
