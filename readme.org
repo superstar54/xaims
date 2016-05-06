@@ -94,8 +94,6 @@ queue.jobname = None
 #+BEGIN_SRC sh
 pip uninstall xaims
 #+END_SRC
-* Examples of using xaims
-see http://xingwang.github.io/dft-book
 
 * Long-term plans for Xaims
 
