@@ -122,7 +122,7 @@ class Xaims:
             except (aimsException):
                 do something.
         '''
-        if vib==.True.:
+        if vib==True:
             pass
             #self.git_vibrations()
         else:
