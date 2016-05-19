@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from ase import Atoms, Atom
 from ase.calculators.aims import Aims
-from ase.calculators.xaims import *
+from xaims import *
 import ase.units
 atoms = Atoms('CO', ([0, 0, 0], [0, 0, 1.2]))
 with Xaims(model=None,
